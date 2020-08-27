@@ -13,8 +13,8 @@ public class WebSocket implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/chat");
-		
+		registry.addHandler(myHandler(), "/chat").setAllowedOrigins("*");
+
 	}
 
 	@Bean

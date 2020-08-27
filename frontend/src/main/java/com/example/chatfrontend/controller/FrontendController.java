@@ -16,4 +16,9 @@ public class FrontendController {
 		return "b";
 	}
 	
+	@GetMapping("/chat")
+	public String chat() {
+		return "chat";
+	}
+	
 }

@@ -76,5 +76,11 @@
 
 	<script th:src="@{jquery-3.5.1.min.js}"></script>
 	<script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript">
+	var mySocket = new WebSocket("ws://localhost:8080/chat");
+	mySocket.onopen = function (event){
+		mySocket.send("Hi From A");
+	}
+	</script>
 </body>
 </html>
