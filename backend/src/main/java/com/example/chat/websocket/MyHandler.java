@@ -16,12 +16,10 @@ public class MyHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
 		if(allConn.size() < 2) {
+			System.out.println("Add Session : " + session);
 			allConn.add(session);
 		}
 
-		if (allConn.size() == 2) {
-			System.out.println(allConn.get(1));
-		}
 
 
 	}
@@ -37,6 +35,7 @@ public class MyHandler extends TextWebSocketHandler {
 		if (allConn.size() == 2) {
 			System.out.println(message);
 			int mySession = allConn.indexOf(session);
+			System.out.println("Session ke : " + mySession);
 			if (mySession == 0) {
 				WebSocketSession userSession = allConn.get(1);
 				userSession.sendMessage(message);

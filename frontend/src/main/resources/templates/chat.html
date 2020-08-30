@@ -13,40 +13,16 @@
 		<div class="row">
 			<div class="col-md-6 text-center">
 				<h2>A</h2>
-				<div class="container">
-					<img src="/w3images/bandmember.jpg" alt="Avatar"
-						style="width: 100%;">
-					<p>Hello. How are you today?</p>
-					<span class="time-right">11:00</span>
-				</div>
+				<div id="boxA" style="overflow: scroll; height: 465px;">
+					
 
-				<div class="container darker">
-					<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right"
-						style="width: 100%;">
-					<p>Hey! I'm fine. Thanks for asking!</p>
-					<span class="time-left">11:01</span>
 				</div>
-
-				<div class="container">
-					<img src="/w3images/bandmember.jpg" alt="Avatar"
-						style="width: 100%;">
-					<p>Sweet! So, what do you wanna do today?</p>
-					<span class="time-right">11:02</span>
-				</div>
-
-				<div class="container darker">
-					<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right"
-						style="width: 100%;">
-					<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-					<span class="time-left">11:05</span>
-				</div>
-
 				<div class="input-group mb-12">
 					<input type="text" class="form-control" placeholder="Chat to B"
-						aria-label="Chat to B" aria-describedby="basic-addon2"
+						aria-label="Chat to B" aria-describedby="basic-addon2" id="textA"
 						name="chat-a">
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button">Send</button>
+						<button class="btn btn-outline-secondary" id="sendA" type="button">Send</button>
 					</div>
 				</div>
 
@@ -54,40 +30,16 @@
 
 			<div class="col-md-6 text-center">
 				<h2>B</h2>
-				<div class="container">
-					<img src="/w3images/bandmember.jpg" alt="Avatar"
-						style="width: 100%;">
-					<p>Hello. How are you today?</p>
-					<span class="time-right">11:00</span>
-				</div>
+				<div id="boxB" style="overflow: scroll; height: 465px;">
 
-				<div class="container darker">
-					<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right"
-						style="width: 100%;">
-					<p>Hey! I'm fine. Thanks for asking!</p>
-					<span class="time-left">11:01</span>
-				</div>
-
-				<div class="container">
-					<img src="/w3images/bandmember.jpg" alt="Avatar"
-						style="width: 100%;">
-					<p>Sweet! So, what do you wanna do today?</p>
-					<span class="time-right">11:02</span>
-				</div>
-
-				<div class="container darker">
-					<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right"
-						style="width: 100%;">
-					<p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-					<span class="time-left">11:05</span>
 				</div>
 
 				<div class="input-group mb-12">
 					<input type="text" class="form-control" placeholder="Chat to A"
-						aria-label="Chat to A" aria-describedby="basic-addon2"
+						aria-label="Chat to A" aria-describedby="basic-addon2" id="textB"
 						name="chat-b">
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button">Send</button>
+						<button class="btn btn-outline-secondary" id="sendB" type="button">Send</button>
 					</div>
 				</div>
 			</div>
@@ -100,26 +52,121 @@
 	<script th:src="@{jquery-3.5.1.min.js}"></script>
 	<script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
 	<script type="text/javascript">
-		var socketA = new WebSocket("ws://localhost:8080/chat");
-		var socketB = new WebSocket("ws://localhost:8080/chat");
-		function sendtoB() {
-			socketB.onopen = function(event) {
-				socketB.send("Hi From B");
-			}
-		}
+		let socketA = new WebSocket("ws://localhost:8081/chat");
+		let socketB = new WebSocket("ws://localhost:8081/chat");
+
+		//Open Connenctions
 		socketA.onopen = function(event) {
+			console.log("socketA open connection");
+		}
+		socketB.onopen = function(event) {
+			console.log("socketB open connection");
+		}
+
+		//On message events
+		socketA.onmessage = function(event) {
+			$("p").prepend("<b>Prepended text</b>");
+		};
+
+		socketB.onmessage = function(event) {
+			console.log("Received Message to B");
+		};
+
+		//Send mesage
+		function sendtoA() {
+			console.log("Hi from A");
 			socketA.send("Hi From A");
+		}
+
+		function sendtoB() {
+			console.log("Hi from B");
+			socketB.send("Hi From B");
 		}
 	</script>
 	<script type="text/javascript">
-		function sendtoA() {
-			socketA.onopen = function(event) {
-				socketA.send("Hi From A");
-			}
+		function messageBox1(message) {
+			let message1 = document.createElement("div");
+			message1.className = "container";
+
+			let img = new Image();
+			img.src = "https://www.w3schools.com/w3images/bandmember.jpg";
+			img.className = "right";
+			img.style.width = "100%";
+
+			let p = document.createElement("p");
+			let TextNode = document.createTextNode(message);
+			p.appendChild(TextNode);
+
+			let span = document.createElement("span");
+			span.className = "time-right";
+			let today = new Date();
+			let time = document.createTextNode(today.getHours() + ":"
+					+ today.getMinutes());
+			span.appendChild(time);
+
+			message1.append(img);
+			message1.append(p);
+			message1.append(span);
+
+			return message1;
+
 		}
 
+		function messageBox2(message) {
+			let message2 = document.createElement("div");
+			message2.className = "container darker";
 
+			let img = new Image();
+			img.src = "https://www.w3schools.com/w3images/bandmember.jpg";
+			img.className = "left";
+			img.style.width = "100%";
+
+			let p = document.createElement("p");
+			let TextNode = document.createTextNode(message);
+			p.appendChild(TextNode);
+
+			let span = document.createElement("span");
+			span.className = "time-left";
+			let today = new Date();
+			let time = document.createTextNode(today.getHours() + ":"
+					+ today.getMinutes());
+			span.appendChild(time);
+
+			message2.append(img);
+			message2.append(p);
+			message2.append(span);
+
+			return message2;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+	document.getElementById("sendA").addEventListener("click", function(event) {
+		let box = document.getElementById("boxA");
+		let text = document.getElementById("textA");
+		let modal = messageBox2(text.value);
+		box.append(modal);
+		box.scrollTo(0, box.scrollHeight);
 		
+		let box2 = document.getElementById("boxB");
+		let modal2 = messageBox1(text.value);
+		box2.append(modal2);
+		box2.scrollTo(0, box.scrollHeight);
+	});
+	
+	document.getElementById("sendB").addEventListener("click", function(event) {
+		let box = document.getElementById("boxB");
+		let text = document.getElementById("textB");
+		let modal = messageBox2(text.value);
+		box.append(modal);
+		box.scrollTo(0, box.scrollHeight);
+		
+		let box2 = document.getElementById("boxA");
+		let modal2 = messageBox1(text.value);
+		box2.append(modal2);
+		box2.scrollTo(0, box.scrollHeight);
+	});
 	</script>
 </body>
 </html>
